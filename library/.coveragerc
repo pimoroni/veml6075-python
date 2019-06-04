@@ -1,0 +1,4 @@
+[run]
+source = veml6075
+omit =
+    .tox/*
