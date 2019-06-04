@@ -14,5 +14,5 @@ def test_setup():
     uv_sensor.disable_high_dynamic_range()
     uv_sensor.set_integration_time('800ms')
     uva, uvb = uv_sensor.get_measurements()
-    uv_comp1, uv_comp2 = uv_sensor.get_commparitor_readings()
+    uv_comp1, uv_comp2 = uv_sensor.get_comparitor_readings()
     del uv_sensor
