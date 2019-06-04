@@ -74,7 +74,7 @@ class VEML6075:
         self._veml6075 = Device([0x10], i2c_dev=self._i2c_dev, bit_width=8, registers=(
             Register('UV_CONF', 0x00, fields=(
                 BitField('value', 0xFFFF),
-                BitField('uv_intergration_time', 0b0111000000000000, adapter=LookupAdapter({
+                BitField('uv_integration_time', 0b0111000000000000, adapter=LookupAdapter({
                     '50ms': 0b000,
                     '100ms': 0b001,
                     '200ms': 0b010,
