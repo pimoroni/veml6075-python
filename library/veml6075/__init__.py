@@ -125,11 +125,8 @@ class VEML6075:
     def set_shutdown(self, value):
         self._veml6075.UV_CONF.set_shutdown(value)
 
-    def enable_high_dynamic_range(self):
-        self._veml6075.UV_CONF.set_high_dynamic_enable(1)
-
-    def disable_high_dynamic_range(self):
-        self._veml6075.UV_CONF.set_high_dynamic_enable(0)
+    def set_high_dynamic_range(self, value):
+        self._veml6075.UV_CONF.set_high_dynamic_enable(value)
 
     def get_measurements(self):
         return self._veml6075.UVA_DATA.get_data(), self._veml6075.UVB_DATA.get_data()
@@ -170,8 +167,8 @@ if __name__ == "__main__":
 
     uv_sensor = VEML6075(i2c_dev=bus)
     uv_sensor.set_shutdown(False)
-    uv_sensor.disable_high_dynamic_range()
-    uv_sensor.set_integration_time('800ms')
+    uv_sensor.set_high_dynamic_range(False)
+    uv_sensor.set_integration_time('100ms')
 
     while 1:
         uva, uvb = uv_sensor.get_measurements()
