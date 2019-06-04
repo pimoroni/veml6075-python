@@ -12,7 +12,7 @@ def test_setup():
     uv_sensor = veml6075.VEML6075()
     uv_sensor.set_shutdown(False)
     uv_sensor.disable_high_dynamic_range()
-    uv_sensor.set_intergration_time('800ms')
+    uv_sensor.set_integration_time('800ms')
     uva, uvb = uv_sensor.get_measurements()
     uv_comp1, uv_comp2 = uv_sensor.get_commparitor_readings()
     del uv_sensor
