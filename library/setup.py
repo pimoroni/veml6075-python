@@ -39,7 +39,7 @@ classifiers = ['Development Status :: 4 - Beta',
 
 setup(
     name='veml6075',
-    version='0.0.1',
+    version='0.0.2',
     author='Gee Bartlett',
     author_email='gee@pimoroni.com',
     description="""{{DESCRIPTION}}""",
@@ -50,5 +50,5 @@ setup(
     project_urls={'GitHub': 'https://www.github.com/pimoroni/veml6075-python'},
     classifiers=classifiers,
     packages=['veml6075'],
-    install_requires=['i2cdevice']
+    install_requires=['i2cdevice>=0.0.6']
 )

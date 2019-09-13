@@ -2,7 +2,7 @@ import time
 from i2cdevice import Device, Register, BitField
 from i2cdevice.adapter import Adapter, LookupAdapter, U16ByteSwapAdapter
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 class SensorDataAdapter(Adapter):
