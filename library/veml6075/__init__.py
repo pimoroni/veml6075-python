@@ -2,7 +2,7 @@ import time
 from i2cdevice import Device, Register, BitField
 from i2cdevice.adapter import Adapter, LookupAdapter, U16ByteSwapAdapter
 
-__version__ = '0.0.1'
+__version__ = '0.0.2'
 
 
 class SensorDataAdapter(Adapter):
@@ -16,12 +16,11 @@ class SensorDataAdapter(Adapter):
     def _decode(self, value):
         LSB = (value & 0xFF00) >> 10
         MSB = (value & 0x00FF) << 6
-        # print (bin(MSB),bin(LSB))
         return MSB + LSB
 
 
 class BCDAdapter(Adapter):
-
+    """Convert from binary coded decimal"""
     def _decode(self, value):
         upper = ((value & 0xF0) >> 4) * 10
         lower = (value & 0x0F)
@@ -70,7 +69,7 @@ class VEML6075:
         self._i2c_addr = i2c_addr
         self._i2c_dev = i2c_dev
         self._is_setup = False
-        # Device definition
+
         self._veml6075 = Device([0x10], i2c_dev=self._i2c_dev, bit_width=8, registers=(
             Register('UV_CONF', 0x00, fields=(
                 BitField('value', 0xFFFF),
@@ -106,34 +105,31 @@ class VEML6075:
 
     def get_integration_time(self):
 
-        return self._veml6075.UV_CONF.get_uv_integration_time()
+        return self._veml6075.get('UV_CONF').uv_integration_time
 
     def set_integration_time(self, value):
         try:
-            self._veml6075.UV_CONF.set_uv_integration_time(value)
+            self._veml6075.set('UV_CONF', uv_integration_time=value)
         except RuntimeError:
             raise RuntimeError('{0} is an invalid setting for UV integration time'.format(value))
 
     def get_id(self):
-
-        return self._veml6075.ID.get_device_id()
+        return self._veml6075.get('ID').device_id
 
     def get_shutdown(self):
-
-        return self._veml6075.UV_CONF.get_shutdown()
+        return self._veml6075.get('UV_CONF').shutdown
 
     def set_shutdown(self, value):
-        self._veml6075.UV_CONF.set_shutdown(value)
+        self._veml6075.set('UV_CONF', shutdown=value)
 
     def set_high_dynamic_range(self, value):
-        self._veml6075.UV_CONF.set_high_dynamic_enable(value)
+        self._veml6075.set('UV_CONF', high_dynamic_enable=value)
 
     def get_measurements(self):
-        return self._veml6075.UVA_DATA.get_data(), self._veml6075.UVB_DATA.get_data()
+        return self._veml6075.get('UVA_DATA').data, self._veml6075.get('UVB_DATA').data
 
     def get_comparitor_readings(self):
-
-        return self._veml6075.UVCOMP1_DATA.get_data(), self._veml6075.UVCOMP2_DATA.get_data()
+        return self._veml6075.get('UVCOMP1_DATA').data, self._veml6075.get('UVCOMP2_DATA').data
 
     def convert_to_index(self, uva, uvb, uv_comp1, uv_comp2):
         result = 0
@@ -175,6 +171,6 @@ if __name__ == "__main__":
         uv_comp1, uv_comp2 = uv_sensor.get_comparitor_readings()
 
         print('UVA : {0} UVB : {1} COMP 1 : {2} COMP 2 : {3}'.format(uva, uvb, uv_comp1, uv_comp2))
-        print ('UVA INDEX: {0[0]} UVB INDEX : {0[1]} AVG UV INDEX : {0[2]}'.format(uv_sensor.convert_to_index(uva, uvb, uv_comp1, uv_comp2)))
+        print('UVA INDEX: {0[0]} UVB INDEX : {0[1]} AVG UV INDEX : {0[2]}'.format(uv_sensor.convert_to_index(uva, uvb, uv_comp1, uv_comp2)))
 
         time.sleep(0.2)
